@@ -1,69 +1,107 @@
-import Image from "next/image";
+"use client";
+
+import React, { useEffect, useRef } from "react";
+import dynamic from "next/dynamic";
+import { Navigation } from "@/components/layout/Navigation";
+import { Footer } from "@/components/layout/Footer";
+import { Hero } from "@/components/sections/Hero";
+import { About } from "@/components/sections/About";
+import { TechStack } from "@/components/sections/TechStack";
+import { Experience } from "@/components/sections/Experience";
+import { Projects } from "@/components/sections/Projects";
+import { Philosophy } from "@/components/sections/Philosophy";
+import { Contact } from "@/components/sections/Contact";
+import { ThreeFallback } from "@/components/three/ThreeFallback";
+import { worldState } from "@/lib/animations/worldState";
+import { gsap, ScrollTrigger } from "@/lib/animations/gsap";
+
+// Lazy-load Three.js canvas dynamically with SSR disabled and lightweight fallback
+const ThreeScene = dynamic(() => import("@/components/three/ThreeScene"), {
+  ssr: false,
+  loading: () => <ThreeFallback isLoading={true} />,
+});
 
 export default function Home() {
+  const mainRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!mainRef.current) return;
+
+    const sections = [
+      { id: "hero", checkpoint: 0 },
+      { id: "about", checkpoint: 1 },
+      { id: "stack", checkpoint: 2 },
+      { id: "experience", checkpoint: 3 },
+      { id: "projects", checkpoint: 4 },
+      { id: "contact", checkpoint: 5 },
+    ];
+
+    const ctx = gsap.context(() => {
+      // Global scroll progress listener tied to ScrollTrigger
+      ScrollTrigger.create({
+        trigger: mainRef.current,
+        start: "top top",
+        end: "bottom bottom",
+        onUpdate: (self) => {
+          // Identify which section is currently centered
+          const scrollY = window.scrollY + window.innerHeight * 0.35;
+          let currentSectionId = "hero";
+
+          for (const s of sections) {
+            const el = document.getElementById(s.id);
+            if (el) {
+              const top = el.offsetTop;
+              const height = el.offsetHeight;
+              if (scrollY >= top && scrollY < top + height) {
+                currentSectionId = s.id;
+                break;
+              }
+            }
+          }
+
+          worldState.setProgress(self.progress, currentSectionId);
+        },
+      });
+
+      // Section-specific triggers to ensure precise checkpoint alignment
+      sections.forEach((sec) => {
+        const el = document.getElementById(sec.id);
+        if (el) {
+          ScrollTrigger.create({
+            trigger: el,
+            start: "top 60%",
+            end: "bottom 40%",
+            onEnter: () => worldState.setProgress(sec.checkpoint / 5, sec.id),
+            onEnterBack: () => worldState.setProgress(sec.checkpoint / 5, sec.id),
+          });
+        }
+      });
+    }, mainRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+    <div ref={mainRef} className="relative w-full min-h-screen">
+      {/* Fixed Persistent 3D WebGL Background */}
+      <ThreeScene />
+
+      {/* Fixed HUD Navigation */}
+      <Navigation />
+
+      {/* Main Content Sections */}
+      <main className="relative z-10 w-full overflow-hidden">
+        <Hero />
+        <About />
+        <TechStack />
+        <Experience />
+        <Projects />
+        <Philosophy />
+        <Contact />
       </main>
+
+      {/* Global Engineering Telemetry Footer */}
+      <Footer />
     </div>
   );
 }
