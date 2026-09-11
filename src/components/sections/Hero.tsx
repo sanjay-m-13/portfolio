@@ -77,42 +77,40 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Center Main Stage Content */}
-      <div className="my-auto py-12 max-w-3xl space-y-6">
-        <div className="hero-elem">
-          <span className="inline-block font-mono text-xs md:text-sm tracking-widest text-[var(--accent)] uppercase font-semibold">
+      {/* Center Main Stage Content with Liquid Glass Effect */}
+      <div className="hero-elem my-auto py-8 sm:py-10 px-6 sm:px-10 max-w-3xl space-y-6 liquid-glass-card rounded-2xl liquid-sheen relative overflow-hidden">
+        {/* Subtle ambient light splash behind glass */}
+        <div className="absolute -top-20 -left-20 w-48 h-48 rounded-full bg-[var(--accent)] opacity-15 blur-3xl pointer-events-none" />
+
+        <div>
+          <span className="inline-flex items-center px-3 py-1 rounded-full liquid-glass-subtle font-mono text-xs md:text-sm tracking-widest text-[var(--accent)] uppercase font-semibold">
             {"//"} {profileData.eyebrow}
           </span>
         </div>
 
         <h1
           ref={headlineRef}
-          className="hero-elem text-4xl sm:text-6xl lg:text-7xl font-mono font-bold tracking-tight text-[var(--text-primary)] leading-[1.08] uppercase"
+          className="text-4xl sm:text-6xl lg:text-7xl font-mono font-bold tracking-tight text-[var(--text-primary)] leading-[1.15] uppercase flex flex-wrap items-center gap-x-4 sm:gap-x-5 gap-y-1 sm:gap-y-2"
         >
-          {profileData.headline.split(" ").map((word, idx) => (
-            <span key={idx} className="inline-block mr-3">
-              {word === "INTELLIGENT" ? (
-                <span className="text-[var(--accent)] glow-text-subtle">
-                  {word}
-                </span>
-              ) : (
-                word
-              )}
-            </span>
-          ))}
+          <span>BUILDING</span>
+          <span className="text-[var(--accent)] glow-text-subtle">INTELLIGENT</span>
+          <span>DIGITAL</span>
+          <span>SYSTEMS.</span>
         </h1>
 
-        <div className="hero-elem flex items-center gap-2 font-mono text-sm md:text-base text-[var(--text-primary)] tracking-wide">
-          <span className="text-[var(--accent)] font-bold">►</span>
-          <span className="font-semibold text-[var(--accent)]">{profileData.supportingCopy}</span>
+        <div>
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-lg liquid-glass-subtle font-mono text-sm md:text-base text-[var(--text-primary)] tracking-wide">
+            <span className="text-[var(--accent)] font-bold">►</span>
+            <span className="font-semibold text-[var(--accent)]">{profileData.supportingCopy}</span>
+          </div>
         </div>
 
-        <p className="hero-elem text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed max-w-2xl font-sans">
+        <p className="text-base sm:text-lg text-[var(--text-secondary)] leading-relaxed max-w-2xl font-sans">
           {profileData.summary}
         </p>
 
         {/* Call to Actions */}
-        <div className="hero-elem pt-4 flex flex-wrap items-center gap-4">
+        <div className="pt-2 flex flex-wrap items-center gap-4">
           <Button
             variant="primary"
             size="lg"

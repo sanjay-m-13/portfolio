@@ -47,7 +47,7 @@ export function TechStack() {
           className={`px-3 py-1.5 rounded font-mono text-xs uppercase tracking-wider transition-all cursor-pointer ${
             selectedCategory === "ALL"
               ? "bg-[var(--accent)] text-[#05070D] font-semibold shadow-[0_0_12px_rgba(0,240,255,0.4)]"
-              : "border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[rgba(255,255,255,0.2)] bg-[var(--surface-overlay)]"
+              : "border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[rgba(255,255,255,0.2)] liquid-glass-subtle"
           }`}
         >
           FULL STACK (ALL)
@@ -62,10 +62,10 @@ export function TechStack() {
               role="tab"
               aria-selected={isSelected}
               onClick={() => setSelectedCategory(cat.label)}
-              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded font-mono text-xs uppercase tracking-wider transition-all cursor-pointer ${
+              className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg font-mono text-xs uppercase tracking-wider transition-all cursor-pointer ${
                 isSelected
-                  ? "bg-[var(--accent)] text-[#05070D] font-semibold shadow-[0_0_12px_rgba(0,240,255,0.4)]"
-                  : "border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[rgba(255,255,255,0.2)] bg-[var(--surface-overlay)]"
+                  ? "bg-[var(--accent)] text-[#05070D] font-semibold shadow-[0_0_15px_rgba(0,240,255,0.4)]"
+                  : "border border-[var(--border)] text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:border-[rgba(255,255,255,0.2)] liquid-glass-subtle"
               }`}
             >
               {categoryIcons[cat.label]}
@@ -77,7 +77,7 @@ export function TechStack() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         {/* Left / Center Constellation Grid */}
-        <div className="lg:col-span-8 hud-box p-6 md:p-8 rounded-lg bg-[var(--surface-overlay)] backdrop-blur-sm">
+        <div className="lg:col-span-8 liquid-glass p-6 md:p-8 rounded-2xl">
           <div className="flex items-center justify-between pb-6 border-b border-[var(--border)] mb-6">
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[var(--accent)] animate-pulse" />
@@ -131,7 +131,7 @@ export function TechStack() {
         </div>
 
         {/* Right Telemetry Inspection Panel */}
-        <div className="lg:col-span-4 hud-box p-6 rounded-lg bg-[var(--surface-elevated)] space-y-5 sticky top-24">
+        <div className="lg:col-span-4 liquid-glass-card p-6 rounded-2xl space-y-5 sticky top-24">
           <div className="flex items-center justify-between pb-3 border-b border-[var(--border)]">
             <HUDLabel variant="accent" size="sm">
               TELEMETRY INSPECT
