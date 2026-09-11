@@ -54,11 +54,8 @@ export function Navigation() {
           <div className="w-7 h-7 rounded border border-[var(--accent)] bg-[rgba(0,240,255,0.08)] flex items-center justify-center font-mono font-bold text-xs text-[var(--accent)] group-hover:shadow-[0_0_10px_var(--accent)] transition-all">
             SM
           </div>
-          <span className="font-mono text-xs text-[var(--text-primary)] font-semibold tracking-wider flex items-center gap-2">
+          <span className="font-mono text-xs text-[var(--text-primary)] font-semibold tracking-wider">
             SANJAY M
-            <span className="text-[10px] text-[var(--accent)] font-mono opacity-80">
-              {"// SYS.01"}
-            </span>
           </span>
         </Link>
 
