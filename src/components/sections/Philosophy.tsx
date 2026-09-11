@@ -21,7 +21,7 @@ export function Philosophy() {
         {philosophyPrinciples.map((principle) => (
           <div
             key={principle.number}
-            className="liquid-glass p-6 rounded-2xl space-y-4 hover:border-[rgba(0,240,255,0.45)] hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,240,255,0.12)] transition-all group flex flex-col justify-between"
+            className="border border-[var(--border)] bg-[var(--surface-elevated)] p-6 rounded-2xl space-y-4 hover:border-[rgba(0,240,255,0.45)] hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(0,240,255,0.12)] transition-all group flex flex-col justify-between"
           >
             <div className="space-y-3">
               <div className="font-mono text-2xl font-bold text-[var(--accent)] tracking-wider">

@@ -9,7 +9,7 @@ export function ThreeFallback({ isLoading = false }: { isLoading?: boolean }) {
       aria-hidden="true"
     >
       {/* Subtle radial glow representing the core */}
-      <div className="absolute w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(0,240,255,0.08)_0%,rgba(5,7,13,0)_70%)] blur-2xl" />
+      <div className="absolute w-[600px] h-[600px] rounded-full bg-[radial-gradient(circle,rgba(0,240,255,0.08)_0%,rgba(5,7,13,0)_70%)]" />
 
       {/* Concentric orbital rings rendered in SVG */}
       <svg

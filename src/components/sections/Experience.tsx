@@ -103,7 +103,7 @@ export function Experience() {
             </div>
 
             {/* Checkpoint Card */}
-            <div className="liquid-glass p-6 md:p-8 rounded-2xl space-y-4 hover:border-[rgba(0,240,255,0.4)] transition-all">
+            <div className="border border-[var(--border)] bg-[var(--surface-elevated)] p-6 md:p-8 rounded-2xl space-y-4 hover:border-[rgba(0,240,255,0.4)] transition-all">
               <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[var(--border)] pb-4">
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">

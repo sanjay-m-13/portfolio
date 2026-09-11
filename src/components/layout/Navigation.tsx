@@ -42,7 +42,7 @@ export function Navigation() {
   };
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-40 px-4 md:px-8 py-3.5 liquid-glass-subtle border-b border-white/10 transition-all">
+    <header className="fixed top-0 left-0 right-0 z-40 px-4 md:px-8 py-3.5 bg-[rgba(5,7,13,0.92)] border-b border-white/10 transition-all">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Left: Monogram / HUD Logo */}
         <Link
@@ -61,7 +61,7 @@ export function Navigation() {
 
         {/* Center: Desktop Navigation Links */}
         <nav
-          className="hidden md:flex items-center gap-1 lg:gap-2 px-3 py-1 rounded-full liquid-glass border border-white/10"
+          className="hidden md:flex items-center gap-1 lg:gap-2 px-3 py-1 rounded-full bg-[var(--surface-elevated)] border border-white/10"
           aria-label="Main Navigation"
         >
           {NAV_ITEMS.map((item) => {

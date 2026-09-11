@@ -61,7 +61,7 @@ export function Projects() {
               key={project.id}
               onMouseEnter={() => setHoveredProjectId(project.id)}
               onMouseLeave={() => setHoveredProjectId(null)}
-              className={`liquid-glass-card rounded-2xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 ${
+              className={`border border-[var(--border)] bg-[var(--surface-elevated)] rounded-2xl p-6 sm:p-8 flex flex-col justify-between transition-all duration-300 ${
                 isDesktop
                   ? "w-[480px] lg:w-[540px] shrink-0 hover:border-[rgba(0,240,255,0.45)] hover:-translate-y-2 hover:shadow-[0_16px_40px_rgba(0,0,0,0.6)]"
                   : "w-full hover:border-[rgba(0,240,255,0.3)]"
@@ -96,7 +96,7 @@ export function Projects() {
                   {project.highlights.map((highlight) => (
                     <div
                       key={highlight.label}
-                      className="p-2.5 rounded-lg liquid-glass-subtle space-y-1"
+                      className="p-2.5 rounded-lg border border-[rgba(255,255,255,0.06)] bg-[rgba(5,7,13,0.4)] space-y-1"
                     >
                       <div className="font-mono text-[10px] text-[var(--accent)] tracking-wider uppercase font-semibold">
                         {highlight.label}

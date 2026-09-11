@@ -77,8 +77,8 @@ export function About() {
             </span>
           </div>
 
-          <blockquote className="p-5 md:p-6 rounded-xl liquid-glass relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-1.5 h-full bg-[var(--accent)]" />
+          <blockquote className="p-5 md:p-6 rounded-lg border border-[var(--border)] bg-[var(--surface-elevated)] relative">
+            <div className="absolute top-0 left-0 w-1 h-full bg-[var(--accent)]" />
             <p className="text-lg md:text-xl font-mono text-[var(--text-primary)] leading-relaxed italic">
               &ldquo;{profileData.philosophy}&rdquo;
             </p>
@@ -102,16 +102,16 @@ export function About() {
           </div>
 
           <div className="pt-2 flex flex-wrap gap-2 font-mono text-xs text-[var(--text-muted)]">
-            <span className="px-2.5 py-1 rounded-md liquid-glass-subtle">
+            <span className="px-2.5 py-1 rounded border border-[var(--border)] bg-[rgba(255,255,255,0.02)]">
               CLEAN ARCHITECTURE
             </span>
-            <span className="px-2.5 py-1 rounded-md liquid-glass-subtle">
+            <span className="px-2.5 py-1 rounded border border-[var(--border)] bg-[rgba(255,255,255,0.02)]">
               EVENT-DRIVEN PATTERNS
             </span>
-            <span className="px-2.5 py-1 rounded-md liquid-glass-subtle">
+            <span className="px-2.5 py-1 rounded border border-[var(--border)] bg-[rgba(255,255,255,0.02)]">
               DETERMINISTIC TESTING
             </span>
-            <span className="px-2.5 py-1 rounded-md liquid-glass-subtle">
+            <span className="px-2.5 py-1 rounded border border-[var(--border)] bg-[rgba(255,255,255,0.02)]">
               CI/CD RESILIENCE
             </span>
           </div>
@@ -122,7 +122,7 @@ export function About() {
           {profileData.stats.map((stat, index) => (
             <div
               key={stat.label}
-              className="about-stat-card liquid-glass p-5 md:p-6 rounded-xl space-y-3 transition-all duration-200 hover:-translate-y-1 hover:border-[rgba(0,240,255,0.4)] hover:shadow-[0_10px_30px_rgba(0,240,255,0.1)]"
+              className="about-stat-card hud-box p-5 md:p-6 rounded-lg space-y-3 transition-transform duration-200 hover:-translate-y-1 hover:border-[rgba(0,240,255,0.4)]"
             >
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[10px] text-[var(--accent)] tracking-widest uppercase">

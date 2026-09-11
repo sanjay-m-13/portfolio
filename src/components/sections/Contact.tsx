@@ -46,7 +46,7 @@ export function Contact() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         {/* Main contact card */}
-        <div className="lg:col-span-8 liquid-glass-card p-8 md:p-12 rounded-2xl liquid-sheen space-y-8">
+        <div className="lg:col-span-8 border border-[var(--border)] bg-[var(--surface-elevated)] p-8 md:p-12 rounded-2xl space-y-8">
           <div className="flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[var(--border)]">
             <div className="flex items-center gap-3">
               <HUDLabel variant="accent" size="sm">
@@ -125,7 +125,7 @@ export function Contact() {
         </div>
 
         {/* Telemetry sidebar */}
-        <div className="lg:col-span-4 liquid-glass p-6 rounded-2xl space-y-6">
+        <div className="lg:col-span-4 border border-[var(--border)] bg-[var(--surface-elevated)] p-6 rounded-2xl space-y-6">
           <div className="font-mono text-xs text-[var(--accent)] tracking-widest uppercase pb-2 border-b border-[var(--border)]">
             {"// TELEMETRY STATUS"}
           </div>
