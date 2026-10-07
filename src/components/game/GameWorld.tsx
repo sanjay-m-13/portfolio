@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, Suspense } from "react";
 import { Canvas } from "@react-three/fiber";
+import * as THREE from "three";
 import { DistrictConfig } from "@/data/districts";
 import { CityMap } from "./CityMap";
 import { Buildings } from "./Buildings";
@@ -10,6 +11,19 @@ import { CameraRig } from "./CameraRig";
 import { RainParticles } from "./RainParticles";
 import { GameHUD } from "./GameHUD";
 import { MobileControls } from "./MobileControls";
+
+if (typeof window !== "undefined") {
+  const origWarn = console.warn;
+  console.warn = (...args: unknown[]) => {
+    if (
+      typeof args[0] === "string" &&
+      args[0].includes("THREE.Clock: This module has been deprecated")
+    ) {
+      return;
+    }
+    origWarn.apply(console, args);
+  };
+}
 
 export function GameWorld() {
   const [playerPosition, setPlayerPosition] = useState<[number, number, number]>([0, 0.4, 0]);
@@ -32,7 +46,7 @@ export function GameWorld() {
     <div className="relative w-full h-screen bg-[#030712] overflow-hidden select-none">
       {/* 3D WebGL Game Canvas */}
       <Canvas
-        shadows
+        shadows={{ type: THREE.PCFShadowMap }}
         camera={{ position: [0, 35, 30], fov: 45 }}
         gl={{ antialias: true, alpha: false }}
         className="w-full h-full"
@@ -55,15 +69,17 @@ export function GameWorld() {
         <hemisphereLight intensity={0.3} color="#38bdf8" groundColor="#0f172a" />
 
         {/* 3D Scene Components */}
-        <CityMap />
-        <Buildings />
-        <PlayerController
-          onPositionUpdate={handlePositionUpdate}
-          onNearDistrictChange={handleNearDistrictChange}
-          externalMove={touchMoveDir}
-        />
-        <CameraRig playerPosition={playerPosition} />
-        <RainParticles count={700} />
+        <Suspense fallback={null}>
+          <CityMap />
+          <Buildings />
+          <PlayerController
+            onPositionUpdate={handlePositionUpdate}
+            onNearDistrictChange={handleNearDistrictChange}
+            externalMove={touchMoveDir}
+          />
+          <CameraRig playerPosition={playerPosition} />
+          <RainParticles count={700} />
+        </Suspense>
       </Canvas>
 
       {/* 2D HTML HUD & Mobile Touch Controls */}

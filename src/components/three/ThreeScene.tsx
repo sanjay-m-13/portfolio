@@ -10,6 +10,16 @@ import { DataNodes } from "./DataNodes";
 import { ThreeFallback } from "./ThreeFallback";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
+if (typeof window !== "undefined") {
+  const origWarn = console.warn;
+  console.warn = (...args: unknown[]) => {
+    if (typeof args[0] === "string" && args[0].includes("THREE.Clock: This module has been deprecated")) {
+      return;
+    }
+    origWarn.apply(console, args);
+  };
+}
+
 function emptySubscribe() {
   return () => {};
 }

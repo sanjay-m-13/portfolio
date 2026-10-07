@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useMemo } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Text, Float } from "@react-three/drei";
 import * as THREE from "three";
@@ -9,6 +9,11 @@ import { DISTRICTS, DistrictConfig } from "@/data/districts";
 function BuildingStructure({ district }: { district: DistrictConfig }) {
   const [w, h, d] = district.size;
   const [posX, posY, posZ] = district.position;
+
+  const edgesGeo = useMemo(
+    () => new THREE.BoxGeometry(w + 0.05, h + 0.05, d + 0.05),
+    [w, h, d]
+  );
 
   return (
     <group position={[posX, h / 2 + 0.2, posZ]}>
@@ -20,7 +25,7 @@ function BuildingStructure({ district }: { district: DistrictConfig }) {
 
       {/* Outer Neon Edge Lines / Wireframe Accent */}
       <lineSegments>
-        <edgesGeometry args={[new THREE.BoxGeometry(w + 0.05, h + 0.05, d + 0.05)]} />
+        <edgesGeometry args={[edgesGeo]} />
         <lineBasicMaterial color={district.color} linewidth={2} />
       </lineSegments>
 
@@ -72,6 +77,7 @@ function BuildingStructure({ district }: { district: DistrictConfig }) {
           </Text>
 
           <Text
+            font="/fonts/Inter-Bold.woff"
             fontSize={0.6}
             color="#94a3b8"
             anchorX="center"

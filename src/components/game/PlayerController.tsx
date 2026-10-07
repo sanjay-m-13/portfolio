@@ -23,6 +23,10 @@ export function PlayerController({
   const velocity = useRef(new THREE.Vector3(0, 0, 0));
   const rotation = useRef(0);
 
+  // Throttling refs to prevent infinite 60fps React re-renders in parent GameWorld
+  const lastDistrictIdRef = useRef<string | null>(null);
+  const lastReportedPosRef = useRef<[number, number, number]>([0, 0.4, 0]);
+
   // Keyboard input state
   const keys = useRef<{ [key: string]: boolean }>({});
 
@@ -112,9 +116,14 @@ export function PlayerController({
     playerGroupRef.current.position.copy(pos.current);
     playerGroupRef.current.rotation.y = rotation.current;
 
-    // Notify parent of 3D position
-    if (onPositionUpdate) {
-      onPositionUpdate([pos.current.x, pos.current.y, pos.current.z]);
+    // Notify parent of 3D position only if moved noticeably
+    const distMoved = Math.hypot(
+      pos.current.x - lastReportedPosRef.current[0],
+      pos.current.z - lastReportedPosRef.current[2]
+    );
+    if (onPositionUpdate && distMoved > 0.05) {
+      lastReportedPosRef.current = [pos.current.x, pos.current.y, pos.current.z];
+      onPositionUpdate(lastReportedPosRef.current);
     }
 
     // Check proximity to district triggers
@@ -131,7 +140,9 @@ export function PlayerController({
       }
     });
 
-    if (onNearDistrictChange) {
+    const nearestId = nearest ? (nearest as DistrictConfig).id : null;
+    if (onNearDistrictChange && nearestId !== lastDistrictIdRef.current) {
+      lastDistrictIdRef.current = nearestId;
       onNearDistrictChange(nearest);
     }
   });
