@@ -22,26 +22,35 @@ export function Minimap({ playerPosition, activeDistrictId }: MinimapProps) {
     const center = width / 2;
     const scale = width / 140; // 140 units map space
 
-    // Clear background
-    ctx.fillStyle = "#090d16";
+    // Match the street layout shown in the 3D city.
+    ctx.fillStyle = "#111821";
     ctx.fillRect(0, 0, width, height);
 
-    // Draw Grid
-    ctx.strokeStyle = "#1e293b";
-    ctx.lineWidth = 1;
-    const step = 20 * scale;
-    for (let x = 0; x < width; x += step) {
+    const streetOffsets = [-28, 0, 28];
+    const roadWidth = 8 * scale;
+    const roadStart = center - 60 * scale;
+    const roadLength = 120 * scale;
+
+    ctx.fillStyle = "#252e3a";
+    streetOffsets.forEach((offset) => {
+      const roadCenter = center + offset * scale;
+      ctx.fillRect(roadStart, roadCenter - roadWidth / 2, roadLength, roadWidth);
+      ctx.fillRect(roadCenter - roadWidth / 2, roadStart, roadWidth, roadLength);
+    });
+
+    ctx.strokeStyle = "rgba(234, 184, 87, 0.75)";
+    ctx.lineWidth = 0.7;
+    ctx.setLineDash([2, 2]);
+    streetOffsets.forEach((offset) => {
+      const roadCenter = center + offset * scale;
       ctx.beginPath();
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, height);
+      ctx.moveTo(roadStart, roadCenter);
+      ctx.lineTo(roadStart + roadLength, roadCenter);
+      ctx.moveTo(roadCenter, roadStart);
+      ctx.lineTo(roadCenter, roadStart + roadLength);
       ctx.stroke();
-    }
-    for (let y = 0; y < height; y += step) {
-      ctx.beginPath();
-      ctx.moveTo(0, y);
-      ctx.lineTo(width, y);
-      ctx.stroke();
-    }
+    });
+    ctx.setLineDash([]);
 
     // Draw District Blips
     DISTRICTS.forEach((district) => {
