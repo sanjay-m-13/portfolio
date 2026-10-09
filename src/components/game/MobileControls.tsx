@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import { ArrowUp, ArrowDown, ArrowLeft, ArrowRight, Zap } from "lucide-react";
 
 interface MobileControlsProps {
@@ -9,7 +9,11 @@ interface MobileControlsProps {
   activeDistrictName?: string;
 }
 
-export function MobileControls({ onMove, onInteract, activeDistrictName }: MobileControlsProps) {
+export function MobileControls({
+  onMove,
+  onInteract,
+  activeDistrictName,
+}: MobileControlsProps) {
   const [activeKeys, setActiveKeys] = useState<{ [key: string]: boolean }>({});
 
   const handleTouchStart = (dir: { x: number; z: number }, key: string) => {
@@ -99,7 +103,9 @@ export function MobileControls({ onMove, onInteract, activeDistrictName }: Mobil
           <button
             onClick={onInteract}
             className={`w-20 h-20 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 border-2 border-cyan-300 text-white font-mono font-bold text-xs flex flex-col items-center justify-center shadow-lg active:scale-95 transition-transform ${
-              activeDistrictName ? "ring-4 ring-cyan-400/50 animate-pulse" : "opacity-75"
+              activeDistrictName
+                ? "ring-4 ring-cyan-400/50 animate-pulse"
+                : "opacity-75"
             }`}
           >
             <Zap className="w-6 h-6 mb-1 text-yellow-300 fill-yellow-300" />

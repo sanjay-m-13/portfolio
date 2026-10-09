@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { DISTRICTS, DistrictConfig } from "@/data/districts";
@@ -93,7 +93,11 @@ export function PlayerController({
     // Simple AABB Building Collisions
     DISTRICTS.forEach((district) => {
       const [bx, , bz] = district.position;
-      const [halfW, , halfD] = [district.size[0] / 2 + 1, 0, district.size[2] / 2 + 1];
+      const [halfW, , halfD] = [
+        district.size[0] / 2 + 1,
+        0,
+        district.size[2] / 2 + 1,
+      ];
 
       if (
         pos.current.x > bx - halfW &&
@@ -119,10 +123,14 @@ export function PlayerController({
     // Notify parent of 3D position only if moved noticeably
     const distMoved = Math.hypot(
       pos.current.x - lastReportedPosRef.current[0],
-      pos.current.z - lastReportedPosRef.current[2]
+      pos.current.z - lastReportedPosRef.current[2],
     );
     if (onPositionUpdate && distMoved > 0.05) {
-      lastReportedPosRef.current = [pos.current.x, pos.current.y, pos.current.z];
+      lastReportedPosRef.current = [
+        pos.current.x,
+        pos.current.y,
+        pos.current.z,
+      ];
       onPositionUpdate(lastReportedPosRef.current);
     }
 
@@ -131,7 +139,9 @@ export function PlayerController({
     let minDistance = Infinity;
 
     DISTRICTS.forEach((d) => {
-      const dist = pos.current.distanceTo(new THREE.Vector3(d.position[0], pos.current.y, d.position[2]));
+      const dist = pos.current.distanceTo(
+        new THREE.Vector3(d.position[0], pos.current.y, d.position[2]),
+      );
       if (dist < d.triggerRadius) {
         if (dist < minDistance) {
           minDistance = dist;
@@ -196,15 +206,24 @@ export function PlayerController({
       {/* Wheels */}
       {[-0.85, 0.85].map((wx) =>
         [-0.9, 0.9].map((wz) => (
-          <mesh key={`${wx}-${wz}`} position={[wx, 0.2, wz]} rotation={[0, 0, Math.PI / 2]}>
+          <mesh
+            key={`${wx}-${wz}`}
+            position={[wx, 0.2, wz]}
+            rotation={[0, 0, Math.PI / 2]}
+          >
             <cylinderGeometry args={[0.3, 0.3, 0.3, 16]} />
             <meshStandardMaterial color="#111827" roughness={0.9} />
           </mesh>
-        ))
+        )),
       )}
 
       {/* Underglow Neon Light */}
-      <pointLight color="#06b6d4" intensity={4} distance={6} position={[0, -0.2, 0]} />
+      <pointLight
+        color="#06b6d4"
+        intensity={4}
+        distance={6}
+        position={[0, -0.2, 0]}
+      />
     </group>
   );
 }

@@ -1,18 +1,17 @@
 "use client";
 
-import React, { useRef, useMemo } from "react";
-import { useFrame } from "@react-three/fiber";
+import { useMemo } from "react";
 import { Text, Float } from "@react-three/drei";
 import * as THREE from "three";
 import { DISTRICTS, DistrictConfig } from "@/data/districts";
 
 function BuildingStructure({ district }: { district: DistrictConfig }) {
   const [w, h, d] = district.size;
-  const [posX, posY, posZ] = district.position;
+  const [posX, , posZ] = district.position;
 
   const edgesGeo = useMemo(
     () => new THREE.BoxGeometry(w + 0.05, h + 0.05, d + 0.05),
-    [w, h, d]
+    [w, h, d],
   );
 
   return (
@@ -59,7 +58,13 @@ function BuildingStructure({ district }: { district: DistrictConfig }) {
       </mesh>
 
       {/* Point Light emitting from building core */}
-      <pointLight color={district.color} intensity={3} distance={18} decay={2} position={[0, 1, 0]} />
+      <pointLight
+        color={district.color}
+        intensity={3}
+        distance={18}
+        decay={2}
+        position={[0, 1, 0]}
+      />
 
       {/* Floating 3D Neon District Header Title */}
       <Float speed={2} rotationIntensity={0.2} floatIntensity={0.4}>

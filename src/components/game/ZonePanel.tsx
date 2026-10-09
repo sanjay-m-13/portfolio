@@ -1,8 +1,51 @@
 "use client";
 
-import React from "react";
 import { DistrictConfig } from "@/data/districts";
-import { X, ExternalLink, Mail, Shield, Server, Layout, Cpu, FolderGit2, Send, Star } from "lucide-react";
+import { X, ExternalLink, Star } from "lucide-react";
+
+type ProfileStat = {
+  value: string;
+  label: string;
+  detail?: string;
+  sublabel?: string;
+  description?: string;
+};
+
+type SkillItem = {
+  id?: string;
+  name: string;
+  level?: string;
+  description?: string;
+  detail?: string;
+};
+
+type SkillCategoryItem = {
+  label?: string;
+  description?: string;
+  skills?: SkillItem[];
+};
+
+type ProjectItem = {
+  id?: string;
+  title?: string;
+  description?: string;
+  summary?: string;
+  tagline?: string;
+  category?: string;
+  number?: string;
+  technologies?: string[];
+  tech?: string[];
+  links?: { live?: string };
+  liveUrl?: string;
+};
+
+type SocialItem = {
+  id?: string;
+  platform?: string;
+  label?: string;
+  url?: string;
+  handle?: string;
+};
 
 interface ZonePanelProps {
   district: DistrictConfig;
@@ -11,6 +54,31 @@ interface ZonePanelProps {
 
 export function ZonePanel({ district, onClose }: ZonePanelProps) {
   const { content } = district;
+  const profile =
+    content.type === "profile" &&
+    content.data &&
+    typeof content.data === "object" &&
+    "profile" in content.data
+      ? content.data.profile
+      : undefined;
+  const skillData =
+    content.type === "skills" &&
+    content.data &&
+    typeof content.data === "object" &&
+    "highlights" in content.data
+      ? content.data
+      : undefined;
+  const contactData =
+    content.type === "contact" &&
+    content.data &&
+    typeof content.data === "object" &&
+    "socials" in content.data
+      ? content.data
+      : undefined;
+  const projectList =
+    content.type === "projects" && Array.isArray(content.data)
+      ? content.data
+      : [];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md animate-fade-in">
@@ -50,31 +118,32 @@ export function ZonePanel({ district, onClose }: ZonePanelProps) {
           {content.type === "profile" && (
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {content.data?.profile?.stats?.map((stat: any, idx: number) => (
-                  <div
-                    key={idx}
-                    className="p-4 bg-[var(--surface)] border border-[var(--border)] rounded-lg"
-                  >
-                    <div className="text-2xl font-extrabold text-cyan-400 font-mono">
-                      {stat.value}
+                {Array.isArray(profile?.stats) &&
+                  profile.stats.map((stat: ProfileStat, idx: number) => (
+                    <div
+                      key={idx}
+                      className="p-4 bg-[var(--surface)] border border-[var(--border)] rounded-lg"
+                    >
+                      <div className="text-2xl font-extrabold text-cyan-400 font-mono">
+                        {stat.value}
+                      </div>
+                      <div className="text-xs font-bold text-slate-300 uppercase mt-1">
+                        {stat.label}
+                      </div>
+                      <p className="text-xs text-slate-400 mt-2">
+                        {stat.detail || stat.sublabel || stat.description}
+                      </p>
                     </div>
-                    <div className="text-xs font-bold text-slate-300 uppercase mt-1">
-                      {stat.label}
-                    </div>
-                    <p className="text-xs text-slate-400 mt-2">
-                      {stat.detail || stat.sublabel || stat.description}
-                    </p>
-                  </div>
-                ))}
+                  ))}
               </div>
 
-              {content.data?.profile?.summary && (
+              {profile?.summary && (
                 <div className="p-4 bg-[var(--surface)] border border-[var(--border)] rounded-lg">
                   <h3 className="text-sm font-mono font-bold text-cyan-400 uppercase mb-2">
-                    // ENGINEERING SUMMARY
+                    ENGINEERING SUMMARY
                   </h3>
                   <p className="text-sm text-slate-300 leading-relaxed">
-                    {content.data.profile.summary}
+                    {profile.summary}
                   </p>
                 </div>
               )}
@@ -84,13 +153,13 @@ export function ZonePanel({ district, onClose }: ZonePanelProps) {
           {/* Skills / Sector Details */}
           {content.type === "skills" && (
             <div className="space-y-6">
-              {content.data?.highlights && (
+              {Array.isArray(skillData?.highlights) && (
                 <div>
                   <h3 className="text-sm font-mono font-bold text-cyan-400 uppercase mb-3">
-                    // CORE CAPABILITIES & HIGHLIGHTS
+                    CORE CAPABILITIES & HIGHLIGHTS
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {content.data.highlights.map((item: string, idx: number) => (
+                    {skillData.highlights.map((item: string, idx: number) => (
                       <div
                         key={idx}
                         className="p-3 bg-[var(--surface)] border border-cyan-500/20 rounded-lg flex items-start gap-2"
@@ -103,16 +172,16 @@ export function ZonePanel({ district, onClose }: ZonePanelProps) {
                 </div>
               )}
 
-              {(content.data?.category || content.data?.categories) && (
+              {(skillData?.category || skillData?.categories) && (
                 <div>
                   <h3 className="text-sm font-mono font-bold text-cyan-400 uppercase mb-3">
-                    // TECH STACK MATRIX
+                    TECH STACK MATRIX
                   </h3>
                   <div className="space-y-4">
-                    {(content.data.category
-                      ? [content.data.category]
-                      : content.data.categories || []
-                    ).map((cat: any, catIdx: number) => (
+                    {(skillData?.category
+                      ? [skillData.category]
+                      : skillData?.categories || []
+                    ).map((cat: SkillCategoryItem, catIdx: number) => (
                       <div key={catIdx}>
                         {cat.label && (
                           <div className="text-xs font-mono text-cyan-300 mb-2 uppercase font-bold">
@@ -120,7 +189,7 @@ export function ZonePanel({ district, onClose }: ZonePanelProps) {
                           </div>
                         )}
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                          {cat.skills?.map((skill: any, idx: number) => (
+                          {cat.skills?.map((skill: SkillItem, idx: number) => (
                             <div
                               key={skill.id || idx}
                               className="p-3 bg-[var(--surface)] border border-[var(--border)] rounded-lg"
@@ -149,58 +218,57 @@ export function ZonePanel({ district, onClose }: ZonePanelProps) {
           {content.type === "projects" && (
             <div className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {Array.isArray(content.data) &&
-                  content.data.map((project: any) => {
-                    const techArray: string[] =
-                      project.technologies || project.tech || [];
-                    const summaryText = project.description || project.summary;
-                    const tagLabel =
-                      project.tagline || project.category || project.number;
-                    const liveLink =
-                      project.links?.live && project.links.live !== "#"
-                        ? project.links.live
-                        : project.liveUrl;
+                {projectList.map((project: ProjectItem) => {
+                  const techArray: string[] =
+                    project.technologies || project.tech || [];
+                  const summaryText = project.description || project.summary;
+                  const tagLabel =
+                    project.tagline || project.category || project.number;
+                  const liveLink =
+                    project.links?.live && project.links.live !== "#"
+                      ? project.links.live
+                      : project.liveUrl;
 
-                    return (
-                      <div
-                        key={project.id}
-                        className="p-5 bg-[var(--surface)] border border-[var(--border)] hover:border-amber-500/50 rounded-lg transition-colors flex flex-col justify-between"
-                      >
-                        <div>
-                          <span className="text-[10px] font-mono text-amber-400 uppercase tracking-widest">
-                            {tagLabel}
-                          </span>
-                          <h4 className="text-lg font-bold font-mono text-white mt-1">
-                            {project.title}
-                          </h4>
-                          <p className="text-xs text-slate-300 mt-2 line-clamp-3">
-                            {summaryText}
-                          </p>
-                          <div className="flex flex-wrap gap-1.5 mt-3">
-                            {techArray.map((t: string) => (
-                              <span
-                                key={t}
-                                className="px-2 py-0.5 text-[10px] font-mono bg-amber-950/40 text-amber-300 border border-amber-500/30 rounded"
-                              >
-                                {t}
-                              </span>
-                            ))}
-                          </div>
+                  return (
+                    <div
+                      key={project.id}
+                      className="p-5 bg-[var(--surface)] border border-[var(--border)] hover:border-amber-500/50 rounded-lg transition-colors flex flex-col justify-between"
+                    >
+                      <div>
+                        <span className="text-[10px] font-mono text-amber-400 uppercase tracking-widest">
+                          {tagLabel}
+                        </span>
+                        <h4 className="text-lg font-bold font-mono text-white mt-1">
+                          {project.title}
+                        </h4>
+                        <p className="text-xs text-slate-300 mt-2 line-clamp-3">
+                          {summaryText}
+                        </p>
+                        <div className="flex flex-wrap gap-1.5 mt-3">
+                          {techArray.map((t: string) => (
+                            <span
+                              key={t}
+                              className="px-2 py-0.5 text-[10px] font-mono bg-amber-950/40 text-amber-300 border border-amber-500/30 rounded"
+                            >
+                              {t}
+                            </span>
+                          ))}
                         </div>
-
-                        {liveLink && (
-                          <a
-                            href={liveLink}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="mt-4 inline-flex items-center justify-center gap-2 px-3 py-2 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 rounded text-xs font-mono text-amber-300 font-bold transition-colors"
-                          >
-                            VIEW MISSION <ExternalLink className="w-3.5 h-3.5" />
-                          </a>
-                        )}
                       </div>
-                    );
-                  })}
+
+                      {liveLink && (
+                        <a
+                          href={liveLink}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="mt-4 inline-flex items-center justify-center gap-2 px-3 py-2 bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 rounded text-xs font-mono text-amber-300 font-bold transition-colors"
+                        >
+                          VIEW MISSION <ExternalLink className="w-3.5 h-3.5" />
+                        </a>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -209,37 +277,38 @@ export function ZonePanel({ district, onClose }: ZonePanelProps) {
           {content.type === "contact" && (
             <div className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                {content.data?.socials?.map((social: any) => (
-                  <a
-                    key={social.id || social.platform || social.label}
-                    href={social.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="p-4 bg-[var(--surface)] border border-[var(--border)] hover:border-cyan-400/50 rounded-lg flex items-center justify-between group transition-colors"
-                  >
-                    <div>
-                      <div className="text-sm font-mono font-bold text-white group-hover:text-cyan-400">
-                        {social.label || social.platform}
+                {Array.isArray(contactData?.socials) &&
+                  contactData.socials.map((social: SocialItem) => (
+                    <a
+                      key={social.id || social.platform || social.label}
+                      href={social.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="p-4 bg-[var(--surface)] border border-[var(--border)] hover:border-cyan-400/50 rounded-lg flex items-center justify-between group transition-colors"
+                    >
+                      <div>
+                        <div className="text-sm font-mono font-bold text-white group-hover:text-cyan-400">
+                          {social.label || social.platform}
+                        </div>
+                        <div className="text-xs text-slate-400 mt-0.5 truncate max-w-[140px]">
+                          {social.url || social.handle}
+                        </div>
                       </div>
-                      <div className="text-xs text-slate-400 mt-0.5 truncate max-w-[140px]">
-                        {social.url || social.handle}
-                      </div>
-                    </div>
-                    <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-cyan-400 shrink-0" />
-                  </a>
-                ))}
+                      <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-cyan-400 shrink-0" />
+                    </a>
+                  ))}
               </div>
 
-              {content.data?.email && (
+              {contactData?.email && (
                 <div className="p-5 bg-[var(--surface)] border border-cyan-500/30 rounded-lg text-center">
                   <h4 className="text-sm font-mono font-bold text-cyan-400 uppercase mb-1">
                     DIRECT EMAIL CONNECTION
                   </h4>
                   <a
-                    href={`mailto:${content.data.email}`}
+                    href={`mailto:${contactData.email}`}
                     className="text-lg sm:text-xl font-mono text-white hover:text-cyan-300 underline font-bold"
                   >
-                    {content.data.email}
+                    {contactData.email}
                   </a>
                 </div>
               )}

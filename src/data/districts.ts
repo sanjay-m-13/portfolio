@@ -1,8 +1,38 @@
+import {
+  Experience,
+  Profile,
+  Project,
+  SkillCategory,
+  SocialLink,
+} from "@/types/portfolio";
 import { profileData } from "./profile";
 import { skillCategories } from "./skills";
 import { projectsData } from "./projects";
 import { experienceData } from "./experience";
 import { socialsData } from "./socials";
+
+export interface DistrictProfileData {
+  profile?: Profile;
+  experienceSummary?: Experience[];
+}
+
+export interface DistrictSkillData {
+  category?: SkillCategory;
+  categories?: SkillCategory[];
+  highlights?: string[];
+}
+
+export interface DistrictContactData {
+  socials?: SocialLink[];
+  email?: string;
+}
+
+export type DistrictContentData =
+  | DistrictProfileData
+  | DistrictSkillData
+  | Project[]
+  | DistrictContactData
+  | undefined;
 
 export interface DistrictConfig {
   id: string;
@@ -20,7 +50,7 @@ export interface DistrictConfig {
   content: {
     type: "profile" | "skills" | "projects" | "experience" | "contact";
     title: string;
-    data: any;
+    data: DistrictContentData;
   };
 }
 
@@ -34,7 +64,7 @@ export const DISTRICTS: DistrictConfig[] = [
     size: [10, 12, 10],
     color: "#3b82f6",
     secondaryColor: "#60a5fa",
-    iconName: "Shield",
+    iconName: "shield",
     description: "Central command tower. Full-stack software engineer with near 3 years of production engineering experience.",
     triggerRadius: 9,
     buildingType: "headquarters",
@@ -56,7 +86,7 @@ export const DISTRICTS: DistrictConfig[] = [
     size: [12, 14, 8],
     color: "#10b981",
     secondaryColor: "#34d399",
-    iconName: "Server",
+    iconName: "server",
     description: "Robust microservices architecture, Java, Spring Boot, PostgreSQL, Redis, REST APIs, and JPA persistence.",
     triggerRadius: 9,
     buildingType: "skyscraper",
@@ -83,7 +113,7 @@ export const DISTRICTS: DistrictConfig[] = [
     size: [8, 10, 12],
     color: "#6366f1",
     secondaryColor: "#818cf8",
-    iconName: "Layout",
+    iconName: "layout",
     description: "Modern React.js, Next.js, TypeScript, Tailwind CSS, Three.js, R3F, and interactive visual architecture.",
     triggerRadius: 9,
     buildingType: "hub",
@@ -110,7 +140,7 @@ export const DISTRICTS: DistrictConfig[] = [
     size: [10, 8, 10],
     color: "#ec4899",
     secondaryColor: "#f472b6",
-    iconName: "Cpu",
+    iconName: "cpu",
     description: "Autonomous LLM tools, RAG architectures, prompt engineering, automated test synthesis, and QA automation.",
     triggerRadius: 9,
     buildingType: "lab",
@@ -137,7 +167,7 @@ export const DISTRICTS: DistrictConfig[] = [
     size: [12, 11, 10],
     color: "#f59e0b",
     secondaryColor: "#fbbf24",
-    iconName: "FolderGit2",
+    iconName: "folder-git",
     description: "Archive of featured engineering projects, production applications, full-stack microservices, and AI tools.",
     triggerRadius: 9,
     buildingType: "archive",
@@ -156,7 +186,7 @@ export const DISTRICTS: DistrictConfig[] = [
     size: [8, 9, 8],
     color: "#06b6d4",
     secondaryColor: "#22d3ee",
-    iconName: "Send",
+    iconName: "send",
     description: "Direct comms terminal for inquiries, collaboration opportunities, GitHub, LinkedIn, and email connection.",
     triggerRadius: 8,
     buildingType: "terminal",

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { DistrictConfig } from "@/data/districts";
 import { Minimap } from "./Minimap";
 import { ZonePanel } from "./ZonePanel";
@@ -12,8 +12,13 @@ interface GameHUDProps {
   onInteract: () => void;
 }
 
-export function GameHUD({ playerPosition, nearDistrict, onInteract }: GameHUDProps) {
-  const [activeModalDistrict, setActiveModalDistrict] = useState<DistrictConfig | null>(null);
+export function GameHUD({
+  playerPosition,
+  nearDistrict,
+  onInteract,
+}: GameHUDProps) {
+  const [activeModalDistrict, setActiveModalDistrict] =
+    useState<DistrictConfig | null>(null);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -35,14 +40,18 @@ export function GameHUD({ playerPosition, nearDistrict, onInteract }: GameHUDPro
       <div className="flex items-start justify-between w-full pointer-events-auto">
         {/* Top-Left: Minimap */}
         <div className="flex items-center gap-4">
-          <Minimap playerPosition={playerPosition} activeDistrictId={nearDistrict?.id} />
+          <Minimap
+            playerPosition={playerPosition}
+            activeDistrictId={nearDistrict?.id}
+          />
           <div className="hidden sm:flex flex-col gap-1 text-[11px] font-mono text-cyan-400 bg-slate-950/80 p-2.5 rounded-lg border border-cyan-500/30 backdrop-blur-md">
             <div className="flex items-center gap-1.5 font-bold">
               <Navigation className="w-3.5 h-3.5 text-cyan-400 animate-spin" />
               SANJAY_OS // v3.0 GTA EDITION
             </div>
             <div className="text-slate-400">
-              COORDS: X:{Math.round(playerPosition[0])} Z:{Math.round(playerPosition[2])}
+              COORDS: X:{Math.round(playerPosition[0])} Z:
+              {Math.round(playerPosition[2])}
             </div>
           </div>
         </div>
@@ -62,9 +71,14 @@ export function GameHUD({ playerPosition, nearDistrict, onInteract }: GameHUDPro
 
           {/* Wanted Level Stars (3 Years Experience) */}
           <div className="flex items-center gap-1 mt-0.5">
-            <span className="text-[10px] font-mono text-slate-400 mr-1">EXP LEVEL:</span>
+            <span className="text-[10px] font-mono text-slate-400 mr-1">
+              EXP LEVEL:
+            </span>
             {[1, 2, 3].map((star) => (
-              <Star key={star} className="w-4 h-4 text-yellow-400 fill-yellow-400 animate-pulse" />
+              <Star
+                key={star}
+                className="w-4 h-4 text-yellow-400 fill-yellow-400 animate-pulse"
+              />
             ))}
             {[4, 5].map((star) => (
               <Star key={star} className="w-4 h-4 text-slate-600" />
@@ -77,7 +91,10 @@ export function GameHUD({ playerPosition, nearDistrict, onInteract }: GameHUDPro
       {nearDistrict && !activeModalDistrict && (
         <div className="self-center pointer-events-auto mb-16 md:mb-6 animate-bounce">
           <button
-            onClick={() => setActiveModalDistrict(nearDistrict)}
+            onClick={() => {
+              setActiveModalDistrict(nearDistrict);
+              onInteract();
+            }}
             className="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 border-2 border-cyan-300 rounded-full text-white font-mono font-bold text-sm sm:text-base shadow-2xl hover:scale-105 active:scale-95 transition-all ring-4 ring-cyan-500/30"
           >
             <Zap className="w-5 h-5 text-yellow-300 fill-yellow-300" />
